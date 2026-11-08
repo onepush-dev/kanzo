@@ -1,0 +1,33 @@
+{
+	admin off
+	auto_https off
+	persist_config off
+}
+
+:{$PORT:8080} {
+	# Railway healthcheck: Kanzo's board page, fetched over loopback.
+	handle /healthz {
+		rewrite * /
+		reverse_proxy 127.0.0.1:{$KANZO_PORT:4242} {
+			header_up Host localhost:{$KANZO_PORT:4242}
+		}
+	}
+	# Login page / cookie issuer (railway/gate.mjs).
+	handle /_gate/* {
+		reverse_proxy 127.0.0.1:{$GATE_PORT:8789}
+	}
+	handle {
+		forward_auth 127.0.0.1:{$GATE_PORT:8789} {
+			uri /_gate/verify
+		}
+		# Kanzo only accepts its own localhost Host/Origin (DNS-rebinding guard);
+		# the gate above already authenticated this request.
+		reverse_proxy 127.0.0.1:{$KANZO_PORT:4242} {
+			header_up Host localhost:{$KANZO_PORT:4242}
+			header_up Origin http://localhost:{$KANZO_PORT:4242}
+			header_up -Referer
+			header_up -Authorization
+			flush_interval -1
+		}
+	}
+}
