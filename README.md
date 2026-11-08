@@ -2,7 +2,7 @@
 
 Kanzo — a self-hosted, sharable kanban board for humans and AI agents, with a built-in MCP server. Deploy on Railway with one click.
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template?template=PENDING)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/yA9Hhl)
 
 This repository packages the official [Kanzo](https://github.com/emanuele-em/kanzo) v0.4.1 release binary (AGPL-3.0) for Railway. It is an independent community packaging, not affiliated with or endorsed by the Kanzo project. Source for the packaged binary: upstream tag v0.4.1; packaging source: this repository.
 
